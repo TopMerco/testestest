@@ -42,7 +42,8 @@
   mage={
     spell=sphere,
 	spellx=-100,
-	spelly=-100
+	spelly=-100,
+	direzione=NULL
  }
 armi.weap[0]=sword
 armi.weap[1]=elsword

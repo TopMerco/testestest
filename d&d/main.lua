@@ -10,9 +10,9 @@ function aggiorna()
 	love.graphics.print(player.x,0,0)
 	love.graphics.print(player.y,0,10)
     love.graphics.draw(mage.spell,mage.spellx,mage.spelly)
-	if (mage.spellx<800) and mage.spellx>-40 and (player.direzione==de or player.direzione==idlede) then 
+	if (mage.spellx<800) and mage.spellx>-40 and (mage.direzione==de or mage.direzione==idlede) then 
 	mage.spellx=mage.spellx+10
-	elseif mage.spellx>-40 and mage.spellx<800 and (player.direzione==si or player.direzione==idlesi) then
+	elseif mage.spellx>-40 and mage.spellx<800 and (mage.direzione==si or mage.direzione==idlesi) then
 	mage.spellx=mage.spellx-10
 	end
 	spawn_arma()
@@ -47,9 +47,10 @@ function comandi(dt)
    elseif key == "right" then
        player.direzione=idlede
     end
-   if key=="x" then
+   if key=="x" and (mage.spellx>800 or mage.spellx<0) then
 	   mage.spellx=player.x
-	   mage.spelly=player.y
+	   mage.spelly=player.y+40
+	   mage.direzione=player.direzione
    end
 	   
 end
