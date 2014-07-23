@@ -1,12 +1,11 @@
 require 'anim'      --libreria animazioni
-require 'res'       --contiene sprite e animazioni    
+require 'res'       --classeiene sprite e animazioni    
 require 'Tserial'
+require 'collision'
 function aggiorna()  
 	love.graphics.draw(bg,0,0)
  	player.direzione:draw(player.x,player.y) 
-	if player.arma ~= NULL then
-	love.graphics.draw(player.arma,player.x,player.y)
-	end
+ 	love.graphics.draw(player.arma,player.x+42,player.y-42)
 	love.graphics.print(player.x,0,0)
 	love.graphics.print(player.y,0,10)
     love.graphics.draw(mage.spell,mage.spellx,mage.spelly)
@@ -48,49 +47,49 @@ function comandi(dt)
        player.direzione=idlede
     end
    if key=="x" and (mage.spellx>800 or mage.spellx<0) then
-	   mage.spellx=player.x
+   	if(player.direzione==de) then
+	   mage.spellx=player.x+86
+	else
+		mage.spellx=player.x
+	end
 	   mage.spelly=player.y+40
 	   mage.direzione=player.direzione
    end
 	   
 end
 end
+
 function selezionaclasse()
  love.graphics.draw(wp,0,0)
  love.graphics.draw(selchar,0,0)
  love.graphics.draw(frame,framex,framey)
  function love.keyreleased(key)
-   if key =="right" and cont <3 then
+   if key =="right" and classe <limit then
       framex=framex+150
-	  cont=cont+1
 	  classe=classe+1
-   elseif key =="left" and cont>limit then
+   elseif key =="left" and classe>0 and classe >4 then
       framex=framex-150
-	  cont=cont-1
 	  classe=classe-1
    elseif key=="down" then
       framex=285
 	  framey=320
-	  cont=2
-	  limit=2
 	  classe=4
+	  limit=5
       elseif key=="up" then
       framex=130
 	  framey=173
-	  cont=0
-	  limit=0
 	  classe=0
+	  limit=3
 	  elseif key =="return" then
-	  if classe==0  then
 	  n=1
 	  player.vel=130
-	  player.classe="elfo"
-	  ande=love.graphics.newImage("elfo_dx.png")
-	  ansi=love.graphics.newImage("elfo_sx.png")
-	  ansu=love.graphics.newImage("elfo_dtr.png")
-	  angiu=love.graphics.newImage("elfo_front.png")
-	  idlesiimgum= love.graphics.newImage("elfo_idle_sx.png")
-      idledeimgum= love.graphics.newImage("elfo_idle_dx.png")
+	  player.classe=classe
+	  ande=love.graphics.newImage(classe.."_dx.png")
+	  ansi=love.graphics.newImage(classe.."_sx.png")
+	  ansu=love.graphics.newImage(classe.."_dtr.png")
+	  angiu=love.graphics.newImage(classe.."_front.png")
+	  idlesiimgum= love.graphics.newImage(classe.."_idle_sx.png")
+      idledeimgum= love.graphics.newImage(classe.."_idle_dx.png")
 	  de=newAnimation(ande,84,100,0.2,0)
 	  si=newAnimation(ansi,84,100,0.2,0)
 	  giu=newAnimation(angiu,84,100,0.2,0)
@@ -98,89 +97,15 @@ function selezionaclasse()
 	  idlesi=newAnimation(idlesiimgum,85,100,1,0)
       idlede=newAnimation(idledeimgum,85,100,1,0)
 	  player.direzione=idlesi
-	  elseif classe==1  then
-	  n=1
-	  player.vel=110
-	  player.classe="gnomo"
-	  ande=love.graphics.newImage("gnomo_dx.png")
-	  ansi=love.graphics.newImage("gnomo_sx.png")
-	  ansu=love.graphics.newImage("gnomo_dtr.png")
-	  angiu=love.graphics.newImage("gnomo_front.png")
-	  idlesiimgum= love.graphics.newImage("gnomo_idle_sx.png")
-      idledeimgum= love.graphics.newImage("gnomo_idle_dx.png")
-	  de=newAnimation(ande,84,100,0.2,0)
-	  si=newAnimation(ansi,84,100,0.2,0)
-	  giu=newAnimation(angiu,84,100,0.2,0)
-	  su=newAnimation(ansu,84,100,0.2,0)
-	  idlesi=newAnimation(idlesiimgum,85,100,1,0)
-      idlede=newAnimation(idledeimgum,85,100,1,0)
-	  player.direzione=idlesi
-   elseif classe==2 then
-      n=1
-	  player.vel=110
-	  player.classe="halfling"
-	  ande=love.graphics.newImage("halfling_dx.png")
-	  ansi=love.graphics.newImage("halfling_sx.png")
-	  ansu=love.graphics.newImage("halfling_dtr.png")
-	  angiu=love.graphics.newImage("halfling_front.png")
-	  idlesiimgum= love.graphics.newImage("halfling_idle_sx.png")
-      idledeimgum= love.graphics.newImage("halfling_idle_dx.png")
-	  de=newAnimation(ande,84,100,0.2,0)
-	  si=newAnimation(ansi,84,100,0.2,0)
-	  giu=newAnimation(angiu,84,100,0.2,0)
-	  su=newAnimation(ansu,84,100,0.2,0)
-	  idlesi=newAnimation(idlesiimgum,85,100,1,0)
-      idlede=newAnimation(idledeimgum,85,100,1,0)
-	  player.direzione=idlesi
-   elseif classe==3 then
-      n=1
-	  player.vel=110
-	  player.classe="orco"
-	  ande=love.graphics.newImage("orco_dx.png")
-	  ansi=love.graphics.newImage("orco_sx.png")
-	  ansu=love.graphics.newImage("orco_su.png")
-	  angiu=love.graphics.newImage("orco_front.png")
-	  idlesiimgum= love.graphics.newImage("orco_idle_sx.png")
-      idledeimgum= love.graphics.newImage("orco_idle_dx.png")
-	  de=newAnimation(ande,84,100,0.2,0)
-	  si=newAnimation(ansi,84,100,0.2,0)
-	  giu=newAnimation(angiu,84,100,0.2,0)
-	  su=newAnimation(ansu,84,100,0.2,0)
-	  idlesi=newAnimation(idlesiimgum,85,100,1,0)
-      idlede=newAnimation(idledeimgum,85,100,1,0)
-	  player.direzione=idlesi
-      elseif classe==4 then
-      n=1
-	  player.vel=100
-	  player.classe="nano"
-	  ande=love.graphics.newImage("nano_dx.png")
-	  ansi=love.graphics.newImage("nano_sx.png")
-	  ansu=love.graphics.newImage("nano_dtr.png")
-	  angiu=love.graphics.newImage("nano_front.png")
-	  idlesiimgum= love.graphics.newImage("nano_idle_sx.png")
-      idledeimgum= love.graphics.newImage("nano_idle_dx.png")
-	  de=newAnimation(ande,84,100,0.2,0)
-	  si=newAnimation(ansi,84,100,0.2,0)
-	  giu=newAnimation(angiu,84,100,0.2,0)
-	  su=newAnimation(ansu,84,100,0.2,0)
-	  idlesi=newAnimation(idlesiimgum,85,100,1,0)
-      idlede=newAnimation(idledeimgum,85,100,1,0)
-	  player.direzione=idlesi
-	  elseif classe==5 then
-	  n=1
-	  player.vel=150
-	  player.classe="umano"
-	  player.direzione=idlesi
-   end
 end
 end
 end
 
 function spawn_arma()
-love.graphics.draw(armi.weap[i],armax,armay)
-if(player.x<armax) and (player.x>armax-armi.weap[i]:getWidth()) and (player.y>=armay) and (player.y<armay+60) then
-armax=math.random(50,800)
-armay=math.random(50,510)
+love.graphics.draw(armi.weap[i],armi.x,armi.y)
+if(collisione(player.x,player.y,85,100,armi.x,armi.y,sword:getWidth(),sword:getHeight())) then
+armi.x=math.random(50,800)
+armi.y=math.random(50,510)
 player.arma=armi.weap[i]
 i=math.random(0,2)
 end
